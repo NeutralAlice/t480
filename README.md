@@ -18,10 +18,24 @@ Text description of what should be done to setup the t480 for installs and setti
 
 ###install feh
 
-### install xrandr
+### install xrandr  ##checking if I really need xrandr, probably not
 #set backlight to 30% /sys/class/backlight/intel_backlight/brightness
 
+### install xbacklight
+##add the correct device for intel based backlight to /etc/X11/xorg.conf.d/20-intel.conf
+#Section "Device"
+#    Identifier  "Intel Graphics"
+#    Driver      "intel"
+#    Option      "Backlight"  "intel_backlight"
+#EndSection
 
 ###set i3 config
 #i3 config:
-    include XF86 audio settings
+    bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+    bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -1% && $refresh_i3status
+    bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +1% && $refresh_i3status
+    bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+    bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+    bindsym XF86MonBrightnessDown exec xbacklight -dec 5 # decrease brightness
+    bindsym XF86MonBrightnessUp exec xbacklight -inc 5 # increase screen brightness
+
